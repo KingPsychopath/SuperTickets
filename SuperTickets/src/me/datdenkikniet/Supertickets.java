@@ -13,6 +13,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/** Created by datdenkikniet
+ * If you copy this code, I would be glad if you could mention my name somewhere!!!
+ **/
+
 public class Supertickets extends JavaPlugin {
 	public void onEnable() {
 		System.out.println("We Have Enablisment!");
