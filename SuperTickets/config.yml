@@ -1,0 +1,2 @@
+message to recieving player in private chat: '[PREFIX] [SENDER]: [MESSAGE]'
+message to sending player in private chat: '[PREFIX] [SENDER] ---> [RECIEVER]: [MESSAGE'
