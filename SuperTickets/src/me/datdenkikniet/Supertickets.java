@@ -1,7 +1,6 @@
 package me.datdenkikniet;
 
 import me.datdenkikniet.events.ChatEvent;
-import me.datdenkikniet.events.LeaveEvent;
 import me.datdenkikniet.resources.ticket.Ticket;
 import me.datdenkikniet.resources.ticket.Ticket.Status;
 import me.datdenkikniet.resources.ticket.Ticketer;
@@ -18,7 +17,7 @@ public class Supertickets extends JavaPlugin {
 		System.out.println("We Have Enablisment!");
 		Bukkit.getServer().getPluginManager()
 				.registerEvents(new ChatEvent(), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new LeaveEvent(), this);
+		//Bukkit.getServer().getPluginManager().registerEvents(new LeaveEvent(), this);
 	}
 
 	public void onDisable() {
