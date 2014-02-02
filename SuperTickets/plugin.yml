@@ -4,5 +4,4 @@ version: 0.2.1
 commands:
     supertickets:
         description: main supertickets command
-    st:
-        description: main supertickets command
+        aliases: st

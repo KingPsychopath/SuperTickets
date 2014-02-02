@@ -13,11 +13,10 @@ public class NotifyRunnable extends BukkitRunnable {
 	public NotifyRunnable(Supertickets instance){
 		plugin=instance;
 }
-	String pr = Supertickets.pr;
 	public void run(){
 		for (Player p: plugin.getServer().getOnlinePlayers()){
 			if (p.hasPermission("supertickets.notify") || p.hasPermission("supertickets.*")){
-				String f = pr
+				String f = plugin.pr
 						+ " these are the current open tickets:\n <id>, <sender>, <question>";
 				int count = 0;
 				for (Ticket t : Ticketer.getTickets()) {

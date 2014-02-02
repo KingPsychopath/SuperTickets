@@ -103,4 +103,7 @@ public class Ticket {
 		}
 		return b;
 	}
+	public Status getStatus() {
+		return this.status;
+	}
 }

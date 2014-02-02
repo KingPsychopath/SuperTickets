@@ -1,3 +1,5 @@
-# set this to zero if you don't want notifying on an interval to happen
-# in seconds
-delay between notifiy messages: 1
+# set this to zero if you don't anything to happen with the notifications
+# delay for the auto-notifier in seconds
+delay between notifiy messages: 60
+# The supertickets chat prefix
+supertickets prefix: '&3[&eST&3]&e'

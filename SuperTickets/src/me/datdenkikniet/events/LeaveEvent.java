@@ -12,6 +12,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class LeaveEvent implements Listener{
+	Supertickets plugin;
+	public LeaveEvent(Supertickets instance){
+		plugin = instance;
+	}
 @EventHandler
 public void leave(PlayerQuitEvent e){
 	String name = e.getPlayer().getName();
@@ -20,7 +24,7 @@ public void leave(PlayerQuitEvent e){
 			if (t.getHelper() != null){
 				Player p = Bukkit.getPlayer(t.getHelper());
 				if (p != null){
-					p.sendMessage(Supertickets.pr + " " + name + " has just left the server, so his ticket has been marked as resolved!");
+					p.sendMessage(plugin.pr + " " + name + " has just left the server, so his ticket has been marked as resolved!");
 				}
 				t.clear();
 			}
@@ -35,7 +39,7 @@ public void leave(PlayerQuitEvent e){
 				if (p.hasPermission("supertickets.notify")
 						|| p
 								.hasPermission("supertickets.*")) {
-					p.sendMessage(Supertickets.pr
+					p.sendMessage(plugin.pr
 							+ " "
 							+ p.getName()
 							+ " created a new ticket with the question: \""
@@ -45,7 +49,7 @@ public void leave(PlayerQuitEvent e){
 				}
 			}
 			t.setHelper("");
-			ps.sendMessage(Supertickets.pr + " " + name + " has left the server, but he was helping you! Your ticket has been reopened!");
+			ps.sendMessage(plugin.pr + " " + name + " has left the server, but he was helping you! Your ticket has been reopened!");
 			}
 			break;
 		}

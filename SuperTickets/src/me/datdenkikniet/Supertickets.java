@@ -1,6 +1,14 @@
 package me.datdenkikniet;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+
 import me.datdenkikniet.events.ChatEvent;
+import me.datdenkikniet.events.LeaveEvent;
+import me.datdenkikniet.resources.config.Config;
+import me.datdenkikniet.resources.schedulers.NotifyRunnable;
 import me.datdenkikniet.resources.ticket.Ticket;
 import me.datdenkikniet.resources.ticket.Ticket.Status;
 import me.datdenkikniet.resources.ticket.Ticketer;
@@ -9,28 +17,42 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 /** Created by datdenkikniet
  * If you copy this code, I would be glad if you could mention my name somewhere!!!
  **/
 
-public class Supertickets extends JavaPlugin {
+public class Supertickets extends JavaPlugin{
+	int idCount = 0;
+	Supertickets plugin = this;
+	public Config configYAML = new Config("config");
+	public CustomConfig cfg = new CustomConfig();
+	public String pr = "";
 	public void onEnable() {
 		System.out.println("We Have Enablisment!");
 		Bukkit.getServer().getPluginManager()
-				.registerEvents(new ChatEvent(), this);
+				.registerEvents(new ChatEvent(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new LeaveEvent(this), this);
+		if (cfg.getCustomConfig1(configYAML) == null){
+			cfg.saveDefaultConfig(configYAML);
+		}
+		if (cfg.getCustomConfig1(configYAML).getLong("delay between notifiy messages") != 0){
+			BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+        scheduler.scheduleSyncRepeatingTask(this, new NotifyRunnable(this), 1, cfg.getCustomConfig1(configYAML).getLong("delay between notifiy messages")*20);
+		}
+		pr = ChatColor.translateAlternateColorCodes('&', cfg.getCustomConfig1(configYAML).getString("supertickets prefix"));
 	}
-
 	public void onDisable() {
 		System.out.println("We Have Disableshment");
 	}
 
-	int IdCount = 0;
+			//ChatColor.DARK_AQUA + "[" + ChatColor.YELLOW + "ST" + ChatColor.DARK_AQUA + "]" + ChatColor.YELLOW + ":";
 	public String noTicket = pr + ChatColor.RED + " you dont have a ticket!";
-	public static String pr = ChatColor.DARK_AQUA + "[" + ChatColor.YELLOW
-			+ "ST" + ChatColor.DARK_AQUA + "]" + ChatColor.YELLOW + ":";
 	public String noperm = pr + ChatColor.RED
 			+ " You don't have permission to do this!";
 
@@ -41,7 +63,7 @@ public class Supertickets extends JavaPlugin {
 			if (args.length == 0) {
 				if (sender.hasPermission("supertickets.help")
 						|| sender.hasPermission("supertickets.*")) {
-					sender.sendMessage(Supertickets.pr + ChatColor.GREEN
+					sender.sendMessage(pr + ChatColor.GREEN
 							+ " The SuperTicket "
 							+ getDescription().getVersion().toString()
 							+ " Help menu!");
@@ -119,7 +141,7 @@ public class Supertickets extends JavaPlugin {
 				} else if (args[0].equalsIgnoreCase("help")) {
 					if (sender.hasPermission("supertickets.help")
 							|| sender.hasPermission("supertickets.*")) {
-						sender.sendMessage(Supertickets.pr + ChatColor.GREEN
+						sender.sendMessage(pr + ChatColor.GREEN
 								+ " The SuperTicket "
 								+ getDescription().getVersion().toString()
 								+ " Help menu!");
@@ -321,8 +343,8 @@ public class Supertickets extends JavaPlugin {
 								}
 							}
 							Ticket ticket = new Ticket(sender.getName(), ARGS);
-							ticket.id = IdCount;
-							IdCount++;
+							ticket.id = idCount;
+							idCount++;
 							sender.sendMessage(pr
 									+ " You created a new Ticket with the question: \""
 									+ ticket.question + "\", and the id of "
@@ -360,5 +382,43 @@ public class Supertickets extends JavaPlugin {
 			}
 		}
 		return false;
+	}
+	public class CustomConfig{
+	public FileConfiguration getCustomConfig1(Config config) {
+		if (config.fileConfig == null){
+		reloadCustomConfig2(config);
+		}
+		return config.fileConfig;
+		}
+		public void reloadCustomConfig2(Config config) {
+		if (config.fileConfig == null) {
+		config.file = new File(plugin.getDataFolder(), config.name + ".yml");
+		}
+		config.fileConfig = YamlConfiguration.loadConfiguration(config.file);
+		 
+		InputStream defConfigStream = plugin.getResource(config.name + ".yml");
+		if (defConfigStream != null) {
+		YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+		config.fileConfig.setDefaults(defConfig);
+		}
+		}
+		public void saveCustomConfig3(Config config) {
+		if (config.fileConfig == null || config.file == null) {
+		return;
+		}
+		try {
+		getCustomConfig1(config).save(config.file);
+		} catch (IOException ex) {
+		plugin.getLogger().log(Level.SEVERE, "Could not save config to " + config.file, ex);
+		}
+		}
+		public void saveDefaultConfig(Config config) {
+		if (config.file == null) {
+		config.file = new File(plugin.getDataFolder(), config.name + ".yml");
+		}
+		if (!config.file.exists()) {
+		plugin.saveResource(config.name + ".yml", false);
+		}
+		}
 	}
 }
