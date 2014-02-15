@@ -384,11 +384,11 @@ public class Supertickets extends JavaPlugin{
 						}
 					}
 					String ticketReason = "";
-					for (String s: args){
+					for (int i =1; i< args.length; i++){
 						if (ticketReason.equalsIgnoreCase("")){
-							ticketReason = s;
+							ticketReason = args[i];
 						} else {
-						ticketReason = ticketReason + " " + s;
+						ticketReason = ticketReason + " " + args[i];
 						}
 					}
 					if (ownsATicket) {
@@ -433,11 +433,11 @@ public class Supertickets extends JavaPlugin{
 						}
 						try {
 							String closeReason = "";
-							for (String s: args){
+							for (int i =2; i < args.length; i++){
 								if (closeReason.equalsIgnoreCase("")){
-									closeReason = s;
+									closeReason = args[i];
 								} else {
-									closeReason = closeReason + s;
+									closeReason = closeReason + " " + args[i];
 								}
 							}
 							Player p = Bukkit.getPlayerExact(ticket.sender);
