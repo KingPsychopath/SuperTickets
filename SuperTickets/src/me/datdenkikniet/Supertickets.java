@@ -82,7 +82,7 @@ public class Supertickets extends JavaPlugin{
 								+ "/supertickets create <question>"
 								+ ChatColor.DARK_AQUA + "creates a new ticket!");
 						sender.sendMessage(ChatColor.YELLOW
-								+ "/supertickets leave" + ChatColor.DARK_AQUA
+								+ "/supertickets leave (optional reason)" + ChatColor.DARK_AQUA
 								+ " makes you resolve your own ticket!");
 					}
 					if (sender.hasPermission("supertickets.accept")
@@ -101,7 +101,7 @@ public class Supertickets extends JavaPlugin{
 					if (sender.hasPermission("supertickets.resolve")
 							|| sender.hasPermission("supertickets.*")) {
 						sender.sendMessage(ChatColor.YELLOW
-								+ "/supertickets resolve <id>"
+								+ "/supertickets resolve <id> (optional reason)"
 								+ ChatColor.DARK_AQUA
 								+ " marks a ticket as resolved!");
 					}
@@ -162,7 +162,7 @@ public class Supertickets extends JavaPlugin{
 									+ ChatColor.DARK_AQUA
 									+ "creates a new ticket!");
 							sender.sendMessage(ChatColor.YELLOW
-									+ "/supertickets leave"
+									+ "/supertickets leave (optional reason)"
 									+ ChatColor.DARK_AQUA
 									+ " makes you resolve your own ticket!");
 						}
@@ -183,7 +183,7 @@ public class Supertickets extends JavaPlugin{
 						if (sender.hasPermission("supertickets.resolve")
 								|| sender.hasPermission("supertickets.*")) {
 							sender.sendMessage(ChatColor.YELLOW
-									+ "/supertickets resolve <id>"
+									+ "/supertickets resolve <id> (optional reason)"
 									+ ChatColor.DARK_AQUA
 									+ " marks a ticket as resolved!");
 						}
@@ -372,13 +372,98 @@ public class Supertickets extends JavaPlugin{
 						sender.sendMessage(noperm);
 						return true;
 					}
+				} else if (args[0].equalsIgnoreCase("leave")){
+					if (sender.hasPermission("supertickets.create") || sender.hasPermission("supertickets.*")){
+					boolean ownsATicket = false;
+					Ticket ticket = null;
+					for (Ticket t : Ticketer.getTickets()) {
+						if (t.ownsTicket((Player) sender)) {
+							ownsATicket = true;
+							ticket = t;
+							break;
+						}
+					}
+					String ticketReason = "";
+					for (String s: args){
+						if (ticketReason.equalsIgnoreCase("")){
+							ticketReason = s;
+						} else {
+						ticketReason = ticketReason + " " + s;
+						}
+					}
+					if (ownsATicket) {
+						if (ticket.getHelper() != null) {
+							Bukkit.getPlayerExact(ticket.getHelper())
+									.sendMessage(
+											pr
+													+ " "
+													+ ticket.sender
+													+ " closed his/her ticket with the reason :\""+ ticketReason + "\", you are done!");
+						}
+						ticket.clear();
+						sender.sendMessage(pr
+								+ " You succesfully resolved your own ticket with the reason: \" " + ticketReason + "\"");
+						return true;
+					} else {
+						sender.sendMessage(noTicket);
+						return true;
+					}
 				} else {
+					sender.sendMessage(noperm);
+					return true;
+				}
+				} else if (args[0].equalsIgnoreCase("resolve")){
+					if (sender.hasPermission("supertickets.resolve")
+							|| sender.hasPermission("supertickets.*")) {
+						int d = -1;
+						try {
+							d = Integer.parseInt(args[1]);
+						} catch (NumberFormatException e) {
+							sender.sendMessage(pr
+									+ ChatColor.RED
+									+ " your second argument was no number! (it has to be a number, according to the ticket id");
+							return true;
+						}
+						Ticket ticket = null;
+						for (Ticket t : Ticketer.getTickets()) {
+							if (t.getId() == d) {
+								ticket = t;
+								break;
+							}
+						}
+						try {
+							String closeReason = "";
+							for (String s: args){
+								if (closeReason.equalsIgnoreCase("")){
+									closeReason = s;
+								} else {
+									closeReason = closeReason + s;
+								}
+							}
+							Player p = Bukkit.getPlayerExact(ticket.sender);
+							sender.sendMessage(pr + " you closed "
+									+ ticket.sender + "'s ticket with the reason: \"" + closeReason + "\".");
+							p.sendMessage(pr + " " + sender.getName()
+									+ " closed your ticket with the reason: \"" + closeReason + "\"");
+							ticket.clear();
+							return true;
+						} catch (Exception e) {
+							sender.sendMessage(pr
+									+ ChatColor.RED
+									+ " that ticket does not exist/has been resolved!");
+							return true;
+						}
+					}
+				} 
+				else {
 					sender.sendMessage(pr + ChatColor.RED
 							+ " Wrong usage: use /st for help!");
+					return true;
 				}
 			} else {
 				sender.sendMessage(pr + ChatColor.RED
 						+ " Wrong usage: use /st for help!");
+				return true;
 			}
 		}
 		return false;
