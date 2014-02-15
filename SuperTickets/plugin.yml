@@ -1,6 +1,6 @@
 name: SuperTickets
 main: me.datdenkikniet.Supertickets
-version: 0.2.1
+version: 1.1.0
 commands:
     supertickets:
         description: main supertickets command
