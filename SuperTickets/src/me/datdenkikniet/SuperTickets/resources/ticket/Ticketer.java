@@ -1,4 +1,4 @@
-package me.datdenkikniet.resources.ticket;
+package me.datdenkikniet.SuperTickets.resources.ticket;
 
 import java.util.ArrayList;
 

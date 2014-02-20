@@ -1,17 +1,17 @@
-package me.datdenkikniet;
+package me.datdenkikniet.SuperTickets;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 
-import me.datdenkikniet.events.ChatEvent;
-import me.datdenkikniet.events.LeaveEvent;
-import me.datdenkikniet.resources.config.Config;
-import me.datdenkikniet.resources.schedulers.NotifyRunnable;
-import me.datdenkikniet.resources.ticket.Ticket;
-import me.datdenkikniet.resources.ticket.Ticket.Status;
-import me.datdenkikniet.resources.ticket.Ticketer;
+import me.datdenkikniet.SuperTickets.events.ChatEvent;
+import me.datdenkikniet.SuperTickets.events.LeaveEvent;
+import me.datdenkikniet.SuperTickets.resources.config.Config;
+import me.datdenkikniet.SuperTickets.resources.schedulers.NotifyRunnable;
+import me.datdenkikniet.SuperTickets.resources.ticket.Ticket;
+import me.datdenkikniet.SuperTickets.resources.ticket.Ticketer;
+import me.datdenkikniet.SuperTickets.resources.ticket.Ticket.Status;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

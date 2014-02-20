@@ -1,9 +1,9 @@
-package me.datdenkikniet.resources.schedulers;
+package me.datdenkikniet.SuperTickets.resources.schedulers;
 
-import me.datdenkikniet.Supertickets;
-import me.datdenkikniet.resources.ticket.Ticket;
-import me.datdenkikniet.resources.ticket.Ticket.Status;
-import me.datdenkikniet.resources.ticket.Ticketer;
+import me.datdenkikniet.SuperTickets.Supertickets;
+import me.datdenkikniet.SuperTickets.resources.ticket.Ticket;
+import me.datdenkikniet.SuperTickets.resources.ticket.Ticketer;
+import me.datdenkikniet.SuperTickets.resources.ticket.Ticket.Status;
 
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

@@ -1,4 +1,4 @@
-package me.datdenkikniet.resources.config;
+package me.datdenkikniet.SuperTickets.resources.config;
 
 import java.io.File;
 
